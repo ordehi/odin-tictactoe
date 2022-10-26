@@ -31,13 +31,10 @@ const mockBoard = () => {
 const displayController = ((board) => {
   const renderBoard = (doc) => {
     const display = doc.querySelector('#gameDisplay');
-    console.log(doc);
 
-    board.map((cell) => {
-      let cellNode = doc.createElement('span');
+    board.map((cell, idx) => {
+      let cellNode = display.children[idx];
       cellNode.textContent = cell;
-      cellNode.classList.add('cell');
-      display.appendChild(cellNode);
     });
   };
 

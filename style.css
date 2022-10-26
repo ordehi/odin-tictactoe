@@ -1,0 +1,21 @@
+.game {
+  
+}
+
+#gameDisplay {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  width: 300px;
+  height: 300px;
+  gap: 5px;
+  background-color: black;
+}
+
+.cell {
+  font-size: 5rem;
+  color: black;
+  background-color: white;
+  width: 100%;
+  text-align: center;
+  cursor: pointer;
+}
