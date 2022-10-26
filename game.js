@@ -59,22 +59,28 @@ const displayController = (() => {
 // gameController
 const gameController = (() => {
   const game = {};
+  let turn = 'X';
 
   const addPlayers = (playerX, playerO) => {
-    game[playerX] = { name: playerX, mark: 'X', score: 0 };
-    game[playerO] = { name: playerO, mark: 'O', score: 0 };
+    game['X'] = { name: playerX, score: 0 };
+    game['O'] = { name: playerO, score: 0 };
+  };
+
+  const changeTurn = () => {
+    turn = turn === 'X' ? 'O' : 'X';
   };
 
   const play = (mark, idx) => {
-    gameBoard.write(mark, idx, displayController);
+    gameBoard.write(turn, idx, displayController);
+    changeTurn();
   };
 
   const checkWinner = (board) => {
     return null;
   };
 
-  const addScore = (player) => {
-    game[player].score = ++game[player].score || 1;
+  const addScore = (mark) => {
+    game[mark].score = ++game[mark].score || 1;
   };
 
   const startGame = () => {
