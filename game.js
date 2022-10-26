@@ -1,8 +1,8 @@
-/* You’re going to store the gameboard as an array inside of a Gameboard object, so start there! Your players are also going to be stored in objects… and you’re probably going to want an object to control the flow of the game itself. */
+/* Set up your HTML and write a JavaScript function that will render the contents of the gameboard array to the webpage (for now you can just manually fill in the array with "X"s and "O"s) */
 
 // gameBoard
 const gameBoard = (() => {
-  const board = [];
+  const board = ['X', 'O', 'X', 'O', 'X', 'O', 'O', 'X', 'O'];
 
   return {
     board,
@@ -10,13 +10,41 @@ const gameBoard = (() => {
 })();
 
 //displayController
-const displayController = (() => {
-  const display = [];
+const mockDocument = (() => {
+  const createElement = () => null;
 
   return {
-    display,
+    createElement,
   };
 })();
+
+const mockDisplay = () => {
+  return (querySelector = {
+    innerHTML: null,
+  });
+};
+
+const mockBoard = () => {
+  return ['X', 'O', 'X', 'O', 'X', 'O', 'O', 'X', 'O'];
+};
+
+const displayController = ((board) => {
+  const renderBoard = (doc) => {
+    const display = doc.querySelector('#gameDisplay');
+    console.log(doc);
+
+    board.map((cell) => {
+      let cellNode = doc.createElement('span');
+      cellNode.textContent = cell;
+      cellNode.classList.add('cell');
+      display.appendChild(cellNode);
+    });
+  };
+
+  return {
+    renderBoard,
+  };
+})(gameBoard.board || mockBoard);
 
 // Player
 const Player = (name, score) => {
