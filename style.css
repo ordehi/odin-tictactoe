@@ -24,4 +24,5 @@ header {
   background-color: white;
   text-align: center;
   cursor: pointer;
+  user-select: none;
 }
