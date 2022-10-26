@@ -1,11 +1,23 @@
-/* Set up your HTML and write a JavaScript function that will render the contents of the gameboard array to the webpage (for now you can just manually fill in the array with "X"s and "O"s) */
+/* Build the functions that allow players to add marks to a specific spot on the board, and then tie it to the DOM, letting players click on the gameboard to place their marker. Don’t forget the logic that keeps players from playing in spots that are already taken! */
 
 // gameBoard
 const gameBoard = (() => {
-  const board = ['X', 'O', 'X', 'O', 'X', 'O', 'O', 'X', 'O'];
+  // implement an event emitter on state change call renderBoard
+  const board = [];
+
+  const write = (mark, idx, displayController) => {
+    board[idx] = mark;
+    displayController.renderBoard(document, board);
+  };
+
+  const reset = (displayController) => {
+    board = [];
+    displayController.renderBoard(document, board);
+  };
 
   return {
-    board,
+    write,
+    reset,
   };
 })();
 
@@ -28,8 +40,8 @@ const mockBoard = () => {
   return ['X', 'O', 'X', 'O', 'X', 'O', 'O', 'X', 'O'];
 };
 
-const displayController = ((board) => {
-  const renderBoard = (doc) => {
+const displayController = (() => {
+  const renderBoard = (doc, board) => {
     const display = doc.querySelector('#gameDisplay');
 
     board.map((cell, idx) => {
@@ -41,7 +53,7 @@ const displayController = ((board) => {
   return {
     renderBoard,
   };
-})(gameBoard.board || mockBoard);
+})();
 
 // Player
 const Player = (name, score) => {
