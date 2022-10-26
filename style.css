@@ -26,3 +26,11 @@ header {
   cursor: pointer;
   user-select: none;
 }
+
+#playerDisplay {
+  margin-top: 2rem;
+  display: grid;
+  width: 300px;
+  height: 100px;
+  font-size: 2rem;
+}
