@@ -1,3 +1,7 @@
+:root {
+  font-family: monospace;
+}
+
 header {
   width: 300px;
   text-align: center;
@@ -34,3 +38,65 @@ header {
   height: 100px;
   font-size: 2rem;
 }
+
+legend {
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  margin: 1.5rem 0;
+}
+
+label {
+  display: block;
+  margin-bottom: .5rem;
+}
+
+input, button {
+  border-radius: 6px;
+  border: none;
+  outline: none;
+  font-weight: 600;
+  margin: 0;
+}
+
+input {
+  padding: .3rem;
+}
+
+input:focus {
+  padding: .3rem;
+  box-shadow: inset 1px 1px 3px black;
+}
+
+button {
+  background-color: white;
+  padding: .5rem;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: black;
+  color: white;
+}
+
+#playerInput {
+  position: absolute;
+  background-color: aqua;
+  padding: 1rem;
+  border-radius: 6px;
+  box-shadow: 2px 2px 5px #0007;
+}
+
+/* #playerInput.hidden {
+  display: none;
+} */

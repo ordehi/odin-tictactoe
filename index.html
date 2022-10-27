@@ -23,9 +23,28 @@
         <span class="cell"></span>
         <span class="cell"></span>
       </div>
+      <!-- Clean up the interface to allow players to put in their names, include a button to start/restart the game and add a display element that congratulates the winning player! -->
       <div id="playerDisplay">
-        <div id="playerX">playerX:</div>
-        <div id="playerO">playerO:</div>
+        <div id="playerX"></div>
+        <div id="playerO"></div>
+      </div>
+      <div id="playerInput" class="hidden">
+        <form>
+          <legend>Enter Player Names</legend>
+          <ul>
+            <li>
+              <label for="player1">Player 1</label>
+              <input type="text" id="player1" name="player1" />
+            </li>
+            <li>
+              <label for="player2">Player 2</label>
+              <input type="text" id="player2" name="player2" />
+            </li>
+            <li>
+              <button type="button">Commit</button>
+            </li>
+          </ul>
+        </form>
       </div>
     </main>
     <script src="./game.js"></script>
