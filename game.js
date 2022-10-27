@@ -1,40 +1,24 @@
-/* Build the functions that allow players to add marks to a specific spot on the board, and then tie it to the DOM, letting players click on the gameboard to place their marker. Don’t forget the logic that keeps players from playing in spots that are already taken! */
-
-// mockups
-const mockDocument = (() => {
-  const createElement = () => null;
-
-  return {
-    createElement,
-  };
-})();
-
-const mockDisplay = () => {
-  return (querySelector = {
-    innerHTML: null,
-  });
-};
-
-const mockBoard = () => {
-  return ['X', 'O', 'X', 'O', 'X', 'O', 'O', 'X', 'O'];
-};
+/*  */
 
 // gameBoard
 const gameBoard = (() => {
   // implement an event emitter on state change call renderBoard
-  const board = [];
+  const _board = [];
+
+  const read = () => _board;
 
   const write = (mark, idx, displayController) => {
-    board[idx] = mark;
-    displayController.renderBoard(document, board);
+    _board[idx] = mark;
+    displayController.renderBoard(document);
   };
 
   const reset = (displayController) => {
-    board = [];
-    displayController.renderBoard(document, board);
+    _board = [];
+    displayController.renderBoard(document);
   };
 
   return {
+    read,
     write,
     reset,
   };
@@ -42,7 +26,8 @@ const gameBoard = (() => {
 
 //displayController
 const displayController = (() => {
-  const renderBoard = (doc, board) => {
+  const renderBoard = (doc) => {
+    const board = gameBoard.read();
     const display = doc.querySelector('#gameDisplay');
 
     board.map((cell, idx) => {
@@ -58,29 +43,70 @@ const displayController = (() => {
 
 // gameController
 const gameController = (() => {
-  const game = {};
-  let turn = 'X';
+  let _over = false;
+  const _game = {};
+  let _turn = 'X';
+  const _winningCombos = [
+    [0, 1, 2],
+    [2, 3, 4],
+    [5, 6, 7],
+    [0, 4, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 4, 6],
+    [2, 5, 8],
+    [6, 7, 8],
+  ];
 
-  const addPlayers = (playerX, playerO) => {
-    game['X'] = { name: playerX, score: 0 };
-    game['O'] = { name: playerO, score: 0 };
+  const addPlayers = (playerX = 'PlayerX', playerO = 'PlayerO') => {
+    _game['X'] = { name: playerX, score: 0, plays: [] };
+    _game['O'] = { name: playerO, score: 0, plays: [] };
   };
 
   const changeTurn = () => {
-    turn = turn === 'X' ? 'O' : 'X';
+    _turn = _turn === 'X' ? 'O' : 'X';
   };
 
-  const play = (mark, idx) => {
-    gameBoard.write(turn, idx, displayController);
+  const gameIsOver = () => {
+    console.log('game is over, cannot play');
+  };
+
+  const checkWinner = (game) => {
+    let result = Object.keys(game).reduce((playerResult, player) => {
+      let winnerCombo = _winningCombos.find((combo) =>
+        combo.every((cell) => game[player].plays.includes(cell))
+      );
+      if (winnerCombo) {
+        playerResult[player] = winnerCombo;
+      }
+      return playerResult;
+    }, {});
+
+    let winner = Object.keys(result);
+
+    if (winner.length) {
+      console.log(`Winner is ${winner[0]} with ${result[winner[0]]}`);
+      _over = true;
+    }
     changeTurn();
   };
 
-  const checkWinner = (board) => {
-    return null;
+  const play = (idx) => {
+    if (!_over) {
+      gameBoard.write(_turn, idx, displayController);
+      _game[_turn].plays.push(idx);
+      if (_game[_turn].plays.length >= 3) {
+        checkWinner(_game);
+      } else {
+        changeTurn();
+      }
+    } else {
+      gameIsOver();
+    }
   };
 
   const addScore = (mark) => {
-    game[mark].score = ++game[mark].score || 1;
+    _game[mark].score = ++_game[mark].score || 1;
   };
 
   const startGame = () => {
@@ -88,9 +114,9 @@ const gameController = (() => {
   };
 
   const resetScore = () => {
-    if (Object.keys(game).length) {
-      for (player in game) {
-        game[player].score = 0;
+    if (Object.keys(_game).length) {
+      for (player in _game) {
+        _game[player].score = 0;
       }
     }
   };
@@ -105,13 +131,14 @@ const gameController = (() => {
     play,
     startGame,
     resetGame,
+    checkWinner,
   };
 })();
 
-document.addEventListener('click', (e) => {
+const gameClickListener = document.addEventListener('click', (e) => {
   if (e.target.classList.contains('cell') && e.target.textContent === '') {
     let idx = [...e.target.parentElement.children].indexOf(e.target);
-    gameController.play('X', idx, displayController);
+    gameController.play(idx, displayController);
   }
 });
 
@@ -119,3 +146,5 @@ document.addEventListener('click', (e) => {
 const Player = (name, score) => {
   return { name, score };
 };
+
+gameController.addPlayers();
