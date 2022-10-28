@@ -3,6 +3,7 @@ Clean up the interface to allow players to put in their names, include a button 
 */
 const gameDisplay = document.getElementById('gameDisplay');
 const cellsDisplay = document.getElementById('cells');
+const turnDisplay = document.getElementById('turnDisplay');
 const playerInput = document.getElementById('playerInput');
 const gameControls = document.getElementById('gameControls');
 const winnerDisplay = document.getElementById('congrats');
@@ -20,9 +21,20 @@ const displayController = (() => {
     });
   };
 
-  const updateScores = (playerX, playerO) => {
-    pxDisplay.textContent = `${playerX.name}: ${playerX.score}`;
-    poDisplay.textContent = `${playerO.name}: ${playerO.score}`;
+  const displayTurn = (player) => {
+    turnDisplay.querySelector('#turnPlayer').textContent =
+      (player || 'no one') + "'s";
+  };
+
+  const updateScores = (game) => {
+    let players = Object.keys(game);
+    let playerX =
+      game[players[0]].mark === 'X'
+        ? players.splice(0, 1)[0]
+        : players.splice(1, 1)[0];
+    let playerO = players[0];
+    pxDisplay.textContent = `${playerX}: ${game[playerX].score}`;
+    poDisplay.textContent = `${playerO}: ${game[playerO].score}`;
   };
 
   const showGameDisplay = (gDisplay) => {
@@ -64,6 +76,7 @@ const displayController = (() => {
     updateScores,
     showGameDisplay,
     toggleWinnerDisplay,
+    displayTurn,
   };
 })();
 
@@ -96,7 +109,9 @@ const gameBoard = (() => {
 const gameController = (() => {
   let _over = false;
   let _game = {};
-  let _turn = 'X';
+  let _turn = 'O';
+  let _turnPlayer = '';
+  let _players = [];
   const _winningCombos = [
     [0, 1, 2],
     [3, 4, 5],
@@ -108,21 +123,26 @@ const gameController = (() => {
     [2, 5, 8],
   ];
 
-  const addPlayers = (playerX = 'PlayerX', playerO = 'PlayerO') => {
-    _game['X'] = { name: playerX, score: 0, plays: [] };
-    _game['O'] = { name: playerO, score: 0, plays: [] };
-    displayController.updateScores(_game['X'], _game['O']);
+  const addPlayers = (player1, player2) => {
+    _players[0] = player1 || 'Player1';
+    _players[1] = player2 || 'Player2';
+    _game[_players[0]] = { mark: 'X', score: 0, plays: [] };
+    _game[_players[1]] = { mark: 'O', score: 0, plays: [] };
+    changeTurn();
+    displayController.updateScores(_game);
   };
 
   const init = () => {
     _over = false;
     _game = {};
-    _turn = 'X';
+    _players = [];
     displayController.togglePlayerInput(playerInput);
   };
 
   const changeTurn = () => {
     _turn = _turn === 'X' ? 'O' : 'X';
+    _turnPlayer = _game[_players[0]].mark === _turn ? _players[0] : _players[1];
+    displayController.displayTurn(_turnPlayer);
   };
 
   const gameIsOver = () => {
@@ -143,25 +163,25 @@ const gameController = (() => {
     let winner = Object.keys(result);
 
     if (winner.length) {
-      console.log(
-        `Winner is ${_game[winner[0]].name} with ${result[winner[0]]}`
-      );
+      console.log(`Winner is ${winner[0]} with ${result[winner[0]]}`);
       _game[winner[0]].score = ++_game[winner[0]].score || 1;
-      displayController.updateScores(_game['X'], _game['O']);
-      displayController.toggleWinnerDisplay(
-        winnerDisplay,
-        _game[winner[0]].name
-      );
+      displayController.updateScores(_game);
+      displayController.toggleWinnerDisplay(winnerDisplay, winner[0]);
+      displayController.displayTurn();
       _over = true;
+    } else {
+      changeTurn();
     }
-    changeTurn();
   };
 
   const play = (idx) => {
     if (!_over) {
       gameBoard.write(_turn, idx, displayController);
-      _game[_turn].plays.push(idx);
-      if (_game[_turn].plays.length >= 3) {
+      _game[_turnPlayer].plays.push(idx);
+      if (
+        _game[_players[0]].plays.length >= 3 ||
+        _game[_players[1]].plays.length >= 3
+      ) {
         checkWinner(_game);
       } else {
         changeTurn();
@@ -178,15 +198,15 @@ const gameController = (() => {
   const startGame = () => {
     gameBoard.reset(displayController);
     _over = false;
-    _turn = 'X';
-    _game['X'].plays = [];
-    _game['O'].plays = [];
+    changeTurn();
+    _game[_players[0]].plays = [];
+    _game[_players[1]].plays = [];
   };
 
   const resetScore = () => {
-    _game['X'].score = 0;
-    _game['O'].score = 0;
-    displayController.updateScores(_game['X'], _game['O']);
+    _game[_players[0]].score = 0;
+    _game[_players[1]].score = 0;
+    displayController.updateScores(_game);
   };
 
   const resetGame = () => {

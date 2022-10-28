@@ -21,6 +21,12 @@ header {
   position: relative;
 }
 
+#turnDisplay {
+  text-align: center;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
 #cells {
   display: grid;
   grid-template: repeat(3, 1fr) / repeat(3, 1fr);
@@ -135,7 +141,7 @@ ul.score {
   background-color: #8a2be2dd;
   color: white;
   padding: 1rem;
-  top: -1rem;
+  top: 1.5rem;
   left: -1rem;
   width: 300px;
   height: 300px;
