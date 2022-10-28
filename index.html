@@ -41,10 +41,22 @@
               <input type="text" id="player2" name="player2" />
             </li>
             <li>
-              <button type="button">Commit</button>
+              <button type="button" class="commit">Commit</button>
             </li>
           </ul>
         </form>
+      </div>
+      <div id="gameControls" class="hidden">
+        <ul>
+          <li>Control</li>
+          <li><button type="button" id="restart">Restart Game</button></li>
+          <li><button type="button" id="reset">Reset Game</button></li>
+        </ul>
+        <ul class="score">
+          <li>Score</li>
+          <li><span id="pxDisplay" data-player="X"></span></li>
+          <li><span id="poDisplay" data-player="O"></span></li>
+        </ul>
       </div>
     </main>
     <script src="./game.js"></script>

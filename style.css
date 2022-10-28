@@ -89,7 +89,7 @@ button:hover {
   color: white;
 }
 
-#playerInput {
+#playerInput, #gameControls {
   position: absolute;
   background-color: aqua;
   padding: 1rem;
@@ -97,6 +97,26 @@ button:hover {
   box-shadow: 2px 2px 5px #0007;
 }
 
-/* #playerInput.hidden {
+#gameControls {
+  display: flex;
+  width: 35%;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.score span {
+  font-size: 1.2rem;
+  font-weight: 900;
+}
+
+ul.score {
+  padding-right: 3rem;
+}
+
+#gameControls button {
+  width: 100px;
+}
+
+#playerInput.hidden, #gameControls.hidden {
   display: none;
-} */
+}
