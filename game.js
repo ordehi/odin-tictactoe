@@ -1,15 +1,18 @@
 /* 
 Clean up the interface to allow players to put in their names, include a button to start/restart the game and add a display element that congratulates the winning player!
 */
+const gameDisplay = document.getElementById('gameDisplay');
+const cellsDisplay = document.getElementById('cells');
 const playerInput = document.getElementById('playerInput');
 const gameControls = document.getElementById('gameControls');
+const winnerDisplay = document.getElementById('congrats');
 const pxDisplay = gameControls.querySelector('#pxDisplay');
 const poDisplay = gameControls.querySelector('#poDisplay');
 
 //displayController
 const displayController = (() => {
   const renderBoard = (doc, board) => {
-    const display = doc.querySelector('#gameDisplay');
+    const display = doc.querySelector('#cells');
 
     [...display.children].map((cell, idx) => {
       let played = board[idx] || '';
@@ -20,6 +23,10 @@ const displayController = (() => {
   const updateScores = (playerX, playerO) => {
     pxDisplay.textContent = `${playerX.name}: ${playerX.score}`;
     poDisplay.textContent = `${playerO.name}: ${playerO.score}`;
+  };
+
+  const showGameDisplay = (gDisplay) => {
+    gDisplay.classList.remove('hidden');
   };
 
   const togglePlayerInput = (pInput) => {
@@ -44,11 +51,19 @@ const displayController = (() => {
       };
   };
 
+  const toggleWinnerDisplay = (wDisplay, winner) => {
+    wDisplay.children[1].textContent = winner || '';
+    if (winner === '') wDisplay.classList.add('hidden');
+    if (winner) wDisplay.classList.remove('hidden');
+  };
+
   return {
     renderBoard,
     togglePlayerInput,
     toggleGameControls,
     updateScores,
+    showGameDisplay,
+    toggleWinnerDisplay,
   };
 })();
 
@@ -67,6 +82,7 @@ const gameBoard = (() => {
   const reset = (displayController) => {
     _board = [];
     displayController.renderBoard(document, []);
+    displayController.toggleWinnerDisplay(winnerDisplay, '');
   };
 
   return {
@@ -132,6 +148,10 @@ const gameController = (() => {
       );
       _game[winner[0]].score = ++_game[winner[0]].score || 1;
       displayController.updateScores(_game['X'], _game['O']);
+      displayController.toggleWinnerDisplay(
+        winnerDisplay,
+        _game[winner[0]].name
+      );
       _over = true;
     }
     changeTurn();
@@ -188,6 +208,7 @@ const inputController = (() => {
   const handlePlayerInput = (form) => {
     gameController.addPlayers(form.player1.value, form.player2.value);
     displayController.togglePlayerInput(playerInput);
+    displayController.showGameDisplay(gameDisplay);
     displayController.toggleGameControls(gameControls);
   };
 

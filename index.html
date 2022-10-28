@@ -12,51 +12,57 @@
       <h1>Tic Tac Toe</h1>
     </header>
     <main id="game">
-      <div id="gameDisplay">
-        <span class="cell"></span>
-        <span class="cell"></span>
-        <span class="cell"></span>
-        <span class="cell"></span>
-        <span class="cell"></span>
-        <span class="cell"></span>
-        <span class="cell"></span>
-        <span class="cell"></span>
-        <span class="cell"></span>
+      <div id="gameDisplay" class="hidden">
+        <div id="cells">
+          <span class="cell"></span>
+          <span class="cell"></span>
+          <span class="cell"></span>
+          <span class="cell"></span>
+          <span class="cell"></span>
+          <span class="cell"></span>
+          <span class="cell"></span>
+          <span class="cell"></span>
+          <span class="cell"></span>
+        </div>
+        <div id="congrats" class="hidden">
+          <p>Congratulations</p>
+          <p></p>
+          <p>You win!</p>
+        </div>
       </div>
       <!-- Clean up the interface to allow players to put in their names, include a button to start/restart the game and add a display element that congratulates the winning player! -->
-      <div id="playerDisplay">
-        <div id="playerX"></div>
-        <div id="playerO"></div>
-      </div>
-      <div id="playerInput" class="hidden">
-        <form>
-          <legend>Enter Player Names</legend>
+      <div class="control">
+        <div id="playerInput" class="hidden">
+          <form>
+            <legend>Enter Player Names</legend>
+            <ul>
+              <li>
+                <label for="player1">Player 1</label>
+                <input type="text" id="player1" name="player1" />
+              </li>
+              <li>
+                <label for="player2">Player 2</label>
+                <input type="text" id="player2" name="player2" />
+              </li>
+              <li>
+                <button type="button" class="commit">Commit</button>
+              </li>
+            </ul>
+          </form>
+        </div>
+
+        <div id="gameControls" class="hidden">
           <ul>
-            <li>
-              <label for="player1">Player 1</label>
-              <input type="text" id="player1" name="player1" />
-            </li>
-            <li>
-              <label for="player2">Player 2</label>
-              <input type="text" id="player2" name="player2" />
-            </li>
-            <li>
-              <button type="button" class="commit">Commit</button>
-            </li>
+            <li><h3>Control</h3></li>
+            <li><button type="button" id="restart">New Game</button></li>
+            <li><button type="button" id="reset">Reset Score</button></li>
           </ul>
-        </form>
-      </div>
-      <div id="gameControls" class="hidden">
-        <ul>
-          <li>Control</li>
-          <li><button type="button" id="restart">Restart Game</button></li>
-          <li><button type="button" id="reset">Reset Game</button></li>
-        </ul>
-        <ul class="score">
-          <li>Score</li>
-          <li><span id="pxDisplay" data-player="X"></span></li>
-          <li><span id="poDisplay" data-player="O"></span></li>
-        </ul>
+          <ul class="score">
+            <li><h3>Score</h3></li>
+            <li><span id="pxDisplay" data-player="X"></span></li>
+            <li><span id="poDisplay" data-player="O"></span></li>
+          </ul>
+        </div>
       </div>
     </main>
     <script src="./game.js"></script>

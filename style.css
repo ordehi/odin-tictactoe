@@ -1,5 +1,9 @@
 :root {
   font-family: monospace;
+  --box-shadow: 2px 2px 8px #fff5;
+  --input-bg: #00ffffaa;
+  background-color: black;
+  color: white;
 }
 
 header {
@@ -14,6 +18,10 @@ header {
 }
 
 #gameDisplay {
+  position: relative;
+}
+
+#cells {
   display: grid;
   grid-template: repeat(3, 1fr) / repeat(3, 1fr);
   width: 300px;
@@ -89,24 +97,28 @@ button:hover {
   color: white;
 }
 
+.control {
+  margin-top: 2rem;
+}
+
 #playerInput, #gameControls {
-  position: absolute;
-  background-color: aqua;
+  background-color: var(--input-bg);
   padding: 1rem;
   border-radius: 6px;
-  box-shadow: 2px 2px 5px #0007;
+  box-shadow: var(--box-shadow);
+}
+
+#playerInput {
+  text-align: center;
 }
 
 #gameControls {
   display: flex;
-  width: 35%;
   justify-content: space-around;
-  align-items: center;
 }
 
 .score span {
   font-size: 1.2rem;
-  font-weight: 900;
 }
 
 ul.score {
@@ -117,6 +129,25 @@ ul.score {
   width: 100px;
 }
 
-#playerInput.hidden, #gameControls.hidden {
+#congrats {
+  position: absolute;
+  font-size: 2rem;
+  background-color: #8a2be2dd;
+  color: white;
+  padding: 1rem;
+  top: -1rem;
+  left: -1rem;
+  width: 300px;
+  height: 300px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: 6px;
+  box-shadow: var(--box-shadow);
+}
+
+#playerInput.hidden, #gameControls.hidden, #gameDisplay.hidden, #congrats.hidden {
   display: none;
 }
+
